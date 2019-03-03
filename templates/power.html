@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.1/css/bootstrap.css">
+	<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.19/css/dataTables.bootstrap4.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+	<script type="text/javascript" language="javascript" src="https://cdn.datatables.net/1.10.19/js/dataTables.bootstrap4.min.js"></script>
+	<script type="text/javascript">
+	$(document).ready(function() {
+	    $('#example1').DataTable();
+	    $('#example2').DataTable();
+	});
+</script>
+	<style type="text/css">
+		a {
+			text-decoration: none;
+		}
+		a#edit {
+			color: navy;
+		}
+		a#del {
+			color: maroon;
+		}
+		a#vlink {
+			text-decoration: none;
+			color: #007bff;
+			cursor: pointer;
+		}
+		html {
+			scroll-behavior: smooth;
+		}
+	</style>
+</head>
+<body>
+	<div class="container-fluid">
+		<button class="btn btn-info" onclick="window.location.assign('{% url 'add' typ='category' %}')" title="Add Category">&plus; Category</button>
+		<button class="btn btn-info" onclick="window.location.assign('{% url 'add' typ='book' %}')" title="Add Ebook">&plus; E-book</button>
+		<h3 id="#cat">Categories DB</h3>
+		<div class="row" style="margin-bottom: 100px;">
+			<div class="col-12">
+				<table id="example1" class="table table-bordered" style="width:100%">
+					<thead>
+						<tr>
+							<th>Category Name</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for each in instance %}
+							<tr>
+								<td>{{ each.name }}</td>
+								<td>
+									<a href="javascript:void(0);" id="edit" onclick="window.location.assign('{% url 'edit' typ='category' id=each.id %}')">Edit</a>
+									<a href="javascript:void(0);" id="del" onclick="window.location.assign('{% url 'delete' typ='category' id=each.id %}')">Delete</a>
+								</td>
+							</tr>
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<h3 id="#book">Ebooks DB</h3>
+		<div class="row">
+			<div class="col-12">
+				<table id="example2" class="table table-bordered" style="width:100%">
+					<thead>
+						<tr>
+							<th>Category</th>
+							<th>Title</th>
+							<th>Author(s)</th>
+							<th>Link</th>
+							<th>Action</th>
+						</tr>
+					</thead>
+					<tbody>
+						{% for each in instance %}
+							{% for every in each.my_ebooks.all %}
+								<tr>
+									<td>{{ each.name }}</td>
+									<td>{{ every.title }}</td>
+									<td>{{ every.author }}</td>
+									<td><a onclick="alert('{{ every.link }}')" id="vlink">View_Link</a></td>
+									<td>
+										<a href="javascript:void(0);" id="edit" onclick="window.location.assign('{% url 'edit' typ='book' id=every.id %}')">Edit</a>
+										<a href="javascript:void(0);" id="del" onclick="window.location.assign('{% url 'delete' typ='book' id=every.id %}')">Delete</a>
+									</td>
+								</tr>
+							{% endfor %}
+						{% endfor %}
+					</tbody>
+				</table>
+			</div>
+		</div>
+	</div>
+<script>
+// When the user scrolls down 20px from the top of the document, show the button
+window.onscroll = function() {scrollFunction()};
+
+function scrollFunction() {
+  if (document.body.scrollTop > 20 || document.documentElement.scrollTop > 20) {
+    document.getElementById("myBtn1").style.display = "block";
+    document.getElementById("myBtn2").style.display = "block";
+  } else {
+    document.getElementById("myBtn1").style.display = "none";
+    document.getElementById("myBtn2").style.display = "none";
+  }
+}
+
+// When the user clicks on the button, scroll to the top of the document
+function scrollFunction(target) {
+  $('html,body').animate({scrollTop:$(target).offset().‌​top}, 500);
+  return false;
+}
+</script>
+</body>
+</html>

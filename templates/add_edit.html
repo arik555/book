@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+	<style type="text/css">
+		form label {
+			font-weight: bold;
+		}
+		.bck {
+			background:url(https://i.imgur.com/seuaOqf.gif) center center no-repeat;
+		}
+	</style>
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="row">
+			<div class="col-sm-4">
+				<form method="POST">
+					{% csrf_token %}
+					{% for field in form %}
+						<div class="form-group">
+						{{ field.label_tag }} 
+						{{ field }}
+						{{ field.help_text }}
+						</div>
+					{% endfor %}
+					<input type="submit" value="{{ btn_val }}">
+				</form>
+			</div>
+			<div class="col-sm-7 offset-sm-1 bck embed-responsive embed-responsive-16by9">
+				<iframe src="" class="embed-responsive-item" frameborder=0 seamless="" allowfullscreen scrolling="yes"></iframe>
+				<div style="width: 80px; height: 80px; position: absolute; opacity: 0; right: 10px; top: 0px;"></div>
+			</div>
+		</div>
+		<h1>Hello</h1>
+	</div>
+
+<script type="text/javascript">
+	$(document).ready(function(){
+		// alert($('#id_source :selected').val() == "");
+  		$('input').prop('class', 'form-control');
+  		$('select').prop('class', 'form-control');
+  		$('input[type="submit"]').attr('class', 'btn btn-success');
+  		var x = $('#id_link').val();
+  		$('iframe').prop('src', "{{ instance.frame_src|safe }}");
+  		$('#id_link').blur(function(){
+  			var x0 = $('#id_link').val();
+  			if (x0.split('/')[2] == "github.com") {
+  				if (myFunction()){
+	  				var x1 = x0.replace('https://github.com/', 'https://nbviewer.jupyter.org/github/')
+	  				var x2 = x1.replace('raw', 'blob');
+	  				$('#id_link').val(x2);
+	  			}
+  			}
+  		});
+
+  		$('#id_source').on('change', function(){
+  			var x = $('#id_link').val();
+  			var y = $('#id_source').val();
+  			if (y == '2'){
+  				$('iframe').attr('src', 
+  				"https://docs.google.com/viewer?url="+x+"&hl=en&embedded=true");
+  			}
+  			else {
+  				$('iframe').attr('src', x);
+  			}
+  			
+  		});
+	});
+
+/*
+https://docs.google.com/viewer?url="+x+"&hl=en&embedded=true
+https://docs.google.com/viewer?url=https://github.com/nairuzabulhul/E-Books/raw/master/Python/LEARNING_PYTHON_FOR_FORENSICS.pdf&hl=en&embedded=true
+
+https://github.com/nairuzabulhul/E-Books/raw/master/Python/LEARNING_PYTHON_FOR_FORENSICS.pdf
+*/
+	function myFunction() {
+	  var r = confirm("Convert the link into NBviewer?");
+	  if (r == true) {
+	    return r;
+	  }
+	  return false;
+	}
+
+	
+</script>
+</body>
+</html>

@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+	<style type="text/css">
+		.meta {
+			cursor: pointer;
+		}
+		body {
+			background: url(https://st.depositphotos.com/2650255/5132/v/950/depositphotos_51320077-stock-illustration-cosmetics-and-beauty-products-icons.jpg) repeat;
+			background-size: 200px;
+		}
+	</style>
+</head>
+<body>
+	<div class="container-fluid">
+		<div class="row pb-3 pt-2">
+			<div class="col-12 col-sm-1" style="line-height: 2.7;font-weight: bolder;">
+				Tools:
+			</div>
+			<div class="col-8 col-sm-4 col-md-5 col-lg-4 col-xl-4">
+				<select onchange="gothere(this.value);" class="form-control">
+					<option value="-1">Select Category</option>
+					<option value="0">All</option>
+					{% for category in categories %}
+						<option value="{{ category.id }}">{{ category.name }}</option>
+					{% endfor %}
+				</select>
+			</div>
+			<div class="col-12 col-sm-3 col-md-5 col-lg-3 col-xl-5">
+				<form class="form-inline" method="GET" action="">
+					<div class="form-group">
+						<input type="text" placeholder="Search Title or Author" class="form-control mx-1" name="qs" value="{{ request.GET.qs }}" required>
+						<input type="submit" value="Search" class="btn btn-info" />
+					</div>
+					{% if request.user.is_authenticated %}
+					<button onclick="window.location.assign('{% url 'power' %}')" class="btn btn-dark">DataBase</button>
+					{% endif %}
+				</form>
+
+			</div>
+		</div>
+		<hr>
+		<div class="row">
+	{% for each in instance %}
+			<div class="col-11 col-sm-5 col-md-5 col-lg-5 col-xl-3 card bg-secondary text-white mx-3 meta my-1" onclick="window.location.assign('{% url 'display' id=each.id %}')">
+			    <div class="card-body">
+			    	<h4>Category: <b>{{ each.category }}</b> </h4><hr>
+			    	Book: <b>{{ each.title }}</b><br>
+			    	Author: <b>{{ each.author }}</b>
+			    </div>
+			</div>
+	{% endfor %}
+		</div>
+		{% if instance.has_other_pages %}
+		  <ul class="pagination">
+		    {% if instance.has_previous %}
+		      <li><a href="?page={{ instance.previous_page_number }}" class="btn btn-dark">&laquo; Previous</a></li>
+		    {% else %}
+		      <li class="disabled"><span class="btn btn-disabled">&laquo; Previous</span></li>
+		    {% endif %}
+
+{% if instance.number|add:'-4' > 1 %}
+    <li><a href="?page={{ instance.number|add:'-5' }}">&hellip;</a></li>
+{% endif %}
+
+		    {% for i in page_range %}
+		      {% if instance.number == i %}
+		        <li class="active"><span class="btn btn-info">{{ i }} <span class="sr-only">(current)</span></span></li>
+		      {% else %}
+		        <li><a href="?page={{ i }}" class="btn btn-light">{{ i }}</a></li>
+		      {% endif %}
+		    {% endfor %}
+
+
+{% if instance.paginator.num_pages > instance.number|add:'4' %}
+    <li><a href="?page={{ instance.number|add:'5' }}">&hellip;</a></li>
+{% endif %}
+
+		    {% if instance.has_next %}
+		      <li><a href="?page={{ instance.next_page_number }}" class="btn btn-dark">Next &raquo;</a></li>
+		    {% else %}
+		      <li class="disabled"><span class="btn btn-disabled">Next &raquo;</span></li>
+		    {% endif %}
+		  </ul>
+		{% endif %}
+	</div>
+	<script type="text/javascript">
+		function gothere(argument) {
+			// alert(argument);
+			if (argument == "0") {
+				window.location.assign("{% url 'home' %}");
+			}
+			else if (argument != "0" && argument != "-1") {
+				url = "{% url 'home' cat_id=9876543210 %}"
+				window.location.assign(url.replace('9876543210', argument))
+			}
+		}
+	</script>
+</body>
+</html>

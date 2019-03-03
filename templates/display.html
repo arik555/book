@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title></title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+	<style type="text/css">
+		.bck {
+			background:url(https://i.imgur.com/seuaOqf.gif) center center no-repeat;
+		}
+		body {
+		  background-image: url(https://cdn0.iconfinder.com/data/icons/slim-square-icons-basics/100/basics-08-128.png);
+		  background-repeat: repeat; 
+		}
+	</style>
+</head>
+<body>
+	<div class="container">
+		<div class="row">
+			<div class="col-12">
+				<div class="bck embed-responsive embed-responsive-4by3" id="fcont">
+					<iframe src="" class="embed-responsive-item" frameborder=0 seamless="" allowfullscreen scrolling="yes" style="margin-bottom: 200px;"></iframe>
+					<div style="width: 200px; height: 80px; position: absolute; opacity: 0; right: 10px; top: 0px;"></div>
+				</div>
+			</div>
+		</div>
+	</div>
+<script type="text/javascript">
+	$(document).ready(function(){
+		var x = "{{ instance.frame_src|safe }}";
+  		$('iframe').prop('src', x);
+	});
+</script>
+</body>
+</html>
